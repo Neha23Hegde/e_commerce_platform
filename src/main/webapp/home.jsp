@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+       
+<%
+    // NEW: Fetch username from session
+    String username = (String) session.getAttribute("username");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,15 +105,14 @@
     </div>
 
     <div class="menu-items">
-    	<%
-            String username = (String) session.getAttribute("username");
-        %>
-        <% if (username != null) { %>
-            <span> 👤 Welcome, <%= username %></span>
-            <a href="Logout">Logout ➺</a>
-        <% } else { %>
-            <a href="register.jsp"> 👤Login</a>
-        <% } %>
+    	
+       <% if (username != null) { %>
+    	<span> 👤  <%= username %></span>
+    	<a href="Logout">Logout ➟ </a>
+		<% } else { %>
+    	<a href="login.jsp">👤 Login</a>
+		<% } %>
+       
       
       <a href="#">🛒 Cart</a>
       <a href="#">🏪 Become a Seller</a>

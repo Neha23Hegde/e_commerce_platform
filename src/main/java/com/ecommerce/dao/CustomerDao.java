@@ -48,10 +48,10 @@ public class CustomerDao {
 	            if (rs.next()) {
 	            	  Customer c = new Customer();
 	                 
-	                  c.setName(rs.getString(1));
-	                  c.setEmail(rs.getString(2));
-	                  c.setMobile(rs.getLong(3));
-	                  c.setPassword(rs.getString(4));
+	                  c.setName(rs.getString("name"));
+	                  c.setEmail(rs.getString("email"));
+	                  c.setMobile(rs.getLong("mobile"));
+	                  c.setPassword(rs.getString("password"));
 	                  return c;
 	                  
 	            }

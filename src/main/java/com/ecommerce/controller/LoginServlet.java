@@ -19,22 +19,27 @@ import jakarta.servlet.http.HttpSession;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String email=req.getParameter("email");
-		String pass= req.getParameter("password");
-		
-		Customer c=CustomerDao.login(email, pass);
-		if(c!=null) {
-			HttpSession hs= req.getSession();
-			
-			
-			RequestDispatcher rd=req.getRequestDispatcher("home.jsp");
-			rd.forward(req, resp);
-		}
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-	
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
-	}
-	
+        Customer customer = CustomerDao.login(email, password);
+
+        if (customer != null) {
+            // Create a session and store the username
+            HttpSession session = request.getSession();
+            session.setAttribute("username", customer.getName());
+
+            // Redirect to home.jsp
+            response.sendRedirect("home.jsp");
+        } else {
+            // Invalid credentials - send back to login.jsp with error message
+            request.setAttribute("errorMessage", "Invalid user credentials!");
+            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+            rd.forward(request, response);
+        }
+    }
 
 }

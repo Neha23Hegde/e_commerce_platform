@@ -34,6 +34,7 @@ fieldset {
     border: none;
     padding: 0;
     margin: 0;
+    
 }
 
 legend {
@@ -84,6 +85,17 @@ button:hover {
 
 span{
 padding-left:60px;
+
+}
+
+span a {
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+span a:hover {
+    text-decoration: none;
 }
 
 </style>
