@@ -1,0 +1,108 @@
+@charset "UTF-8";
+	body {
+       		font-family: 'Segoe UI', Tahoma, sans-serif;
+       		background: url("../images/checkout.png") no-repeat center center fixed;
+	   		background-size: cover;
+       		margin: 0;
+       		padding: 20px;
+     	}
+
+    .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto 20px auto;
+            padding: 10px;
+        }
+
+        .orders-header h2 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #673147;
+            margin: 0;
+        }
+
+        .back-btn {
+            padding: 8px 14px;
+            background: #DAB1DA;
+            color: black;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .back-btn:hover {
+            background: #ED80E9;
+        }
+
+        .order-box {
+            
+            margin: 15px auto;
+            padding: 18px;
+            border-radius: 8px;
+            max-width: 800px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #34495e;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            background: #3498db;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ececec;
+            color: #555;
+            font-weight: 700;
+           
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f9fcff;
+        }
+
+        .cancel-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .cancel-btn:hover {
+            background: #c0392b;
+        }
+
+        .empty-msg {
+            text-align: center;
+            font-size: 18px;
+            color: #888;
+            margin-top: 40px;
+        }
+        span{
+        color:red;
+        }
+    

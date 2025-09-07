@@ -1,0 +1,75 @@
+@charset "UTF-8";
+
+     body {
+      background: linear-gradient(135deg, rgba(173, 216, 230, 0.6), rgba(255, 182, 193, 0.6));
+      backdrop-filter: blur(5px);
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+    .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    
+  }
+  
+   .brand {
+    font-weight: bold;
+    font-family: 'Georgia', serif; /* different font */
+    color: brown;
+    font-size: 24px;
+  }
+
+  /* Center section: Admin Dashboard */
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  
+   .logout-btn {
+    background-color: teal;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+  }
+
+  .logout-btn:hover {
+    background-color: #006666;
+  }
+    
+        table { 
+        width: 100%;
+        border-collapse: collapse; 
+        margin-top: 20px;
+         }
+        th, td { border: 1px solid black; 
+        padding: 8px; 
+        text-align: center; 
+        }
+        th { 
+        background-color: #8a8aff;
+        }
+        form {
+        display: inline; 
+        }
+        button,select[name="status"] { 
+        padding: 5px 10px;
+        margin: 2px;
+        border:none;
+        border-radius:6px;
+        }
+        button[name="action"][value="updateStatus"] {
+        background-color: #0077C0;
+        color:white;
+                }
+        button[name="action"][value="cancelOrder"] {
+        background-color:#b20000;
+        color:white;
+        }
+       
+    

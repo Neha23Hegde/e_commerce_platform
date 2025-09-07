@@ -1,0 +1,99 @@
+@charset "UTF-8";
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:url("../images/profilepage.avif") no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+form {
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0px 6px 15px rgba(0,0,0,0.12);
+    width: 400px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+     opacity: 0; 
+     transform: translateY(-10px); 
+    }
+    to {
+     opacity: 1;
+     transform: translateY(0);
+    }
+}
+
+fieldset {
+	border: none;
+	padding: 0; 
+	margin: 0; 
+}
+legend { 
+	font-size: 22px; 
+	font-weight: bold; 
+	margin-bottom: 15px; 
+	text-align: center; 
+	color: #333; 
+}
+label { 
+	display: block; 
+	margin: 8px 0 5px; 
+	font-weight: 500; 
+	color: #444; 
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+input:focus {
+    border-color: #4facfe;
+    box-shadow: 0 0 5px rgba(79,172,254,0.5);
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    background: #F7AAAA; 
+    color: #fff;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover { 
+	background:#F17E7E; 
+}
+
+span { 
+	display: block; 
+	text-align: center; 
+	margin-top: 12px;
+}
+span a { 
+	color: #4facfe; 
+	text-decoration: none; 
+	font-weight: bold; 
+}
+span a:hover {
+	text-decoration: underline; 
+}
+
+.error { 
+	color: red; 
+	font-size: 12px; 
+	margin-top: 3px; 
+	display: block; 
+}

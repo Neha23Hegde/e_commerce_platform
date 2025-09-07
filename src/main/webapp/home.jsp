@@ -1,156 +1,147 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-       
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.*, com.ecommerce.dto.Product, com.ecommerce.dao.ProductDAO" %>
 <%
-    // NEW: Fetch username from session
-    String username = (String) session.getAttribute("username");
+    String username = (String) session.getAttribute("username");// get logged-in user
+    String selectedCategory = request.getParameter("category");//category filter
+    String searchQuery = request.getParameter("search");//search filter
+    List<Product> products = null;
+
+    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+        products = ProductDAO.getProductsBySearch(searchQuery.trim());// search by name
+    } 
+    else if (selectedCategory != null && !selectedCategory.trim().isEmpty()) {
+        products = ProductDAO.getProductsByCategory(selectedCategory);//filter by category
+    } 
+    else {
+        products = ProductDAO.getRandomProducts(32);
+    }
 %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-comerce</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    #navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: skyblue;
-      padding: 10px 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .logo {
-      display: flex;
-      flex-direction: column;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-
-    .logo span {
-      font-size: 12px;
-      color: #878787;
-    }
-
-    .searchbar input {
-      width: 400px;
-      padding: 10px;
-      border: none;
-      background-color: #f0f5ff;
-      border-radius: 4px;
-    }
-
-    .menu-items {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-    }
-
-    .menu-items a {
-      text-decoration: none;
-      color: #212121;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .categories {
-      display: flex;
-      justify-content: center;
-      background-color: #fff;
-      padding: 10px 0;
-      border-top: 1px solid #ddd;
-      border-bottom: 1px solid #ddd;
-      justify-content:space-evenly;
-    }
-    .img-cate{
-      display:flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .categories a {
-      margin: 0 15px;
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
-    }
-
-    .categories a:hover {
-      color: #2874f0;
-    }
-  </style>
+  <title>E-commerce</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/global.css" rel="stylesheet">
 </head>
 <body>
-
- 
-  <div id="navbar">
-   
-    <div class="logo">
-      E-COMMERCE 
-    </div>
-
-    <div class="searchbar">
-      <input type="text" placeholder="🔍 Search for Products, Brands and More">
-    </div>
-
+<div class="header">
+  <div class="navbar">
+    <div class="logo"><img  src="./images/Logo.png" height="50px" width="130px" style=mix-blend-mode:multiply/></div>
+      <!-- Search bar -->
+ 	 <div class="searchbar" style="width: 100%; max-width: 500px; position: relative;">
+  	 <form action="home.jsp" method="get" style="width: 100%;">
+     <input 
+      type="text" 
+      name="search" 
+      placeholder="🔍 Search for Products, Brands and More"
+      value="<%= (request.getParameter("search") != null) ? request.getParameter("search") : "" %>"
+      id="searchInput"
+      style="width: 100%; padding: 10px 40px 10px 12px; font-size: 16px; border-radius: 20px; border: 1px solid #ccc;"
+      oninput="toggleClearButton()"
+    >
+    <!--  Clear button -->
+    <span 
+      id="clearBtn"
+      onclick="clearSearch()" 
+      style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 18px; color: gray; display: none;">
+      ×
+    </span>
+  </form>
+</div>
+  <!-- Menu items depends on login status -->
     <div class="menu-items">
-    	
-       <% if (username != null) { %>
-    	<span> 👤  <%= username %></span>
-    	<a href="Logout">Logout ➟ </a>
-		<% } else { %>
-    	<a href="login.jsp">👤 Login</a>
-		<% } %>
-       
-      
-      <a href="#">🛒 Cart</a>
-      <a href="#">🏪 Become a Seller</a>
+      <% if (username != null) { %>
+        <span class="user"> <a href="profile.jsp">👤 <%= username %></a></span>
+        <a href="Logout">➟ Logout</a>
+        <a href="MyOrdersServlet">🛍️ My Orders</a>
+      <% } else { %>
+        <a href="login.jsp">👤 Login</a>
+      <% } %>
+      <a href="cart.jsp">🛒 Cart</a> 
     </div>
   </div>
 
   <div class="categories">
-    <!--   <div class="img-cate">
-      <a href="#"><img src="https://static.vecteezy.com/system/resources/previews/005/425/617/non_2x/shopping-special-offer-label-with-percentage-sign-and-emojis-3d-illustration-vector.jpg" height="40px" width="40px"><p>Top Offers</p></a>
-    </div>-->
-    <div class="img-cate">
-      <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiEr-9NVSsHdsYVz03lCeLiRxfq5vDXfbSdg&s" height="40px" width="40px"><p>Mobiles & Tablets</p></a>
-    </div>
-    <div class="img-cate">
-      <a href="#"><img src="https://www.shutterstock.com/image-photo/home-appliances-tv-refrigerator-washing-600w-2248825351.jpg" height="40px" width="40px"><p>TVs & Appliances </p></a>
-    </div>
-    <div class="img-cate">
-      <a href="#"><img src="https://www.arkema.com/files/live/sites/shared_arkema/files/images/markets/Electronics%20electrical/electronics.jpg" height="40px" width="40px"><p>Electronics</p></a>
-    </div>
-   <!--   <div class="img-cate">
-      <a href="#"><img src="https://cdn2.stylecraze.com/wp-content/uploads/2018/01/Fashion-Tips-Every-Girl.jpg.webp" height="40px" width="40px"><p>Fashion</p></a>
-    </div>
-    <div class="img-cate">
-      <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSy_yv9C1PcZgnDymWAy6XlcOW_bKt4EjyNQw&s" height="40px" width="40px"><p>Beauty, Food...</p></a>
-    </div>-->
-    <div class="img-cate">
-      <a href="#"><img src="https://assets.aboutamazon.com/dims4/default/e773cec/2147483647/strip/true/crop/1599x900+1+0/resize/1240x698!/quality/90/?url=https%3A%2F%2Famazon-blogs-brightspot.s3.amazonaws.com%2F9e%2F34%2Fb59df0f244e0a6c39929a16ccf90%2Fkitchen-appliances-lead.jpg" height="40px" width="40px"><p>Home & Kitchen</p></a>
-    </div>
-    <div class="img-cate">
-      <a href="#"><img src="https://www.urbanwood.in/assets/image/popular-items/sofa-set.jpg" height="40px" width="40px"><p>Furniture</p></a>
-    </div>
-    <!--  <div class="img-cate">
-      <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBM0MYufCsNhMGYYFhwnmrzGt_RANNKUMOMQ&s" height="40px" width="40px"><p>Flight Bookings</p></a>
-    </div>
-    <div class="img-cate">
-      <a href="#"><img src="https://www.store2k.com/cdn/shop/articles/store2k_blog_2_d342a3bc-141f-4ce3-a06b-bf988b9a78f4_600x.png?v=1628237346" height="40px" width="40px"><p>Grocery</p></a>
-    </div>-->
+    <div class="img-cate"><a href="home.jsp?category=mobiles"><img src="images/mobiles.jpeg" height="40" width="40"><p>Mobiles</p></a></div>
+    <div class="img-cate"><a href="home.jsp?category=tv"><img src="images/Tv_ic.jpg" height="40" width="40"><p>TVs</p></a></div>
+    <div class="img-cate"><a href="home.jsp?category=electronics"><img src="images/electronics.jpg" height="40" width="40"><p>Electronics</p></a></div>
+    <div class="img-cate"><a href="home.jsp?category=kitchen"><img src="images/kitchen.jpg" height="40" width="40"><p>Kitchen</p></a></div>
+    <div class="img-cate"><a href="home.jsp?category=furniture"><img src="images/Furniture_ic.webp" height="40" width="40"><p>Furniture</p></a></div>
   </div>
+</div>
+<!--Bootstrap carousel-->
+<div class="content">
+  <div id="carouselExampleCaptions" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="images/Furniture.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Furniture Offers</h5>
+          <p>Big Discounts on Sofas and Beds</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="images/Kitchen_Appliances.webp" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Kitchen Essentials</h5>
+          <p>Cook in style with top brands</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="images/Home_Appliances.jpg" class="d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Home Appliances</h5>
+          <p>Best Deals on ACs, Washing Machines</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Product display based on category selection -->
+  <div class="container">
+    <h3 class="text-center mb-4">
+      <%= selectedCategory != null ? (selectedCategory.toUpperCase()) : " " %>
+    </h3>
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+      <% if (products != null && !products.isEmpty()) {
+           for (Product p : products) { %>
+             <div class="card" style="width: 18rem" >
+               <img src="<%= p.getImageUrl() %>"  class="card-img-top"  alt="<%= p.getPname() %>">
+               <div class="card-body">
+                 <h5 class="card-title"><%= p.getPname() %></h5>
+                 <p class="card-text"><strong>₹<%= p.getPrice() %></strong></p>
+                 <a href="productdetails?pid=<%= p.getPid() %>" class="btn btn-primary">View Details</a>
+               </div>
+             </div>
+      <%   } 
+         } 
+      	else if (searchQuery != null && !searchQuery.trim().isEmpty()) { %>
+       <p style="color:red; font-size:30px; text-align:center; width:100%;">Product not found!</p>
+<% } %>
+      
+    </div>
+  </div>
+</div>
+<!-- toggle for clear button -->
+<script>
+  function toggleClearButton() {
+    let input = document.getElementById("searchInput");
+    let clearBtn = document.getElementById("clearBtn");
+    clearBtn.style.display = input.value.length > 0 ? "block" : "none";
+  }
 
+  function clearSearch() {
+    document.getElementById("searchInput").value = "";  
+    document.getElementById("clearBtn").style.display = "none";
+    window.location.href = "home.jsp"; 
+  }
+
+  
+  window.onload = toggleClearButton;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
+
 </html>

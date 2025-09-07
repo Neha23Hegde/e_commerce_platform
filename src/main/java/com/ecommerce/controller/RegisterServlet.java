@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 
 import com.ecommerce.dao.CustomerDao;
 import com.ecommerce.dto.Customer;
-
+import com.ecommerce.util.EmailUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -38,14 +38,20 @@ public class RegisterServlet extends HttpServlet {
 			
 			Customer c=new Customer(name,email,mobile,password);
 			boolean isSaved=dao.saveCustomer(c);
-			if(isSaved) {
-				HttpSession session = request.getSession();
+			if (isSaved) {
+	            // Send Welcome Email
+	            String subject = "Welcome to Swift Shop!";
+	            String body = "Hello " + name + ",\n\n" +
+	                          "Thank you for registering with Swift Shop.\n" +
+	                          "Happy Shopping!\n\nTeam Swift Shop";
+
+	            EmailUtil.sendEmail(email, subject, body);
+
+	            HttpSession session = request.getSession();
 	            session.setAttribute("username", name);
-	            response.sendRedirect("home.jsp");
-			}
-			else {
-				out.print("error!");
-			}
-		
-		}
+	            response.sendRedirect("login.jsp");
+	        } else {
+	            out.print("error!");
+	        }
+	    }
 }
